@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
+//                c1.getString(cursor.getColumnIndex("pic"));  --> using column name we can also do this way
                 book_id.add(cursor.getString(0));
                 book_title.add(cursor.getString(1));
                 book_author.add(cursor.getString(2));
