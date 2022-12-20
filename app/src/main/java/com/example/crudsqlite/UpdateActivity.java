@@ -1,7 +1,11 @@
 package com.example.crudsqlite;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +15,7 @@ import android.widget.Toast;
 public class UpdateActivity extends AppCompatActivity {
 
     EditText title_input,author_input,pages_input;
-    Button update_button;
+    Button update_button,delete_button;
 
     String id,title,author,pages;
 
@@ -20,14 +24,25 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+
+        //Action Bar modify
+
+
+
         title_input = findViewById(R.id.title_input2);
         author_input = findViewById(R.id.author_input2);
         pages_input = findViewById(R.id.pages_input2);
 
         update_button = findViewById(R.id.update_button);
+        delete_button = findViewById(R.id.delete_button);
 
 
         getAndSetIntentData();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
 
 
         update_button.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +53,17 @@ public class UpdateActivity extends AppCompatActivity {
                 author=author_input.getText().toString().trim();
                 pages=pages_input.getText().toString().trim();
                 myDatabaseHelper.updateData(id,title,author,pages);
+
+                Intent intent = new Intent(UpdateActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getConfirmDialog();
             }
         });
 
@@ -61,5 +87,29 @@ public class UpdateActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    void getConfirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
+        builder.setTitle("Delete"+title+" ?");
+        builder.setMessage("Are you sure to delete "+title+" ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(UpdateActivity.this);
+                myDatabaseHelper.deleteDataOne(id);
+
+                Intent intent = new Intent(UpdateActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.create().show();
     }
 }
