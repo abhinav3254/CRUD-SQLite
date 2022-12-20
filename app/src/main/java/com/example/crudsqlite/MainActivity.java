@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     CustomAdapter customAdapter;
 
+    ImageView empty_imageview;
+    TextView no_data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         add_button = findViewById(R.id.add_button);
+
+        empty_imageview = findViewById(R.id.empty_imageview);
+        no_data = findViewById(R.id.no_data);
 
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
     void storeDataInArrays() {
         Cursor cursor = myDatabaseHelper.readAllData();
         if (cursor.getCount() == 0) {
-            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
+            empty_imageview.setVisibility(View.VISIBLE);
+            no_data.setVisibility(View.VISIBLE);
         } else {
             while (cursor.moveToNext()) {
 //                c1.getString(cursor.getColumnIndex("pic"));  --> using column name we can also do this way
@@ -82,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 book_author.add(cursor.getString(2));
                 book_pages.add(cursor.getString(3));
             }
+            empty_imageview.setVisibility(View.GONE);
+            no_data.setVisibility(View.GONE);
         }
     }
 
