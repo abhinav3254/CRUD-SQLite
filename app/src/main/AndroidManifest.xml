@@ -13,11 +13,17 @@
         android:theme="@style/Theme.CRUDSQLite"
         tools:targetApi="31">
         <activity
+            android:name=".UpdateActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".AddActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
             android:label="Add Book"
-            >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
